@@ -1,0 +1,32 @@
+{
+  "cars": [
+    {
+      "id": "e450ab19-98b4-4e9e-b88f-11a1a7543974",
+      "mark": "Lexus",
+      "model": "IS300",
+      "power": 223,
+      "yearmade": 2003,
+      "price": 15,
+      "color": "Biały",
+      "bodytype": "Sedan",
+      "description": "Ciągaj wory po betonie",
+      "rented": false,
+      "hours": 12,
+      "charge": 180
+    },
+    {
+      "id": "2eab5b0c-7d41-453b-9f79-fb9ce4efd128",
+      "mark": "Peugeot",
+      "model": "307",
+      "power": 110,
+      "yearmade": 2002,
+      "price": 25,
+      "color": "Błękitny",
+      "bodytype": "Kombi",
+      "description": "Przestronny, nie rdzewiejący kawał żelastwa",
+      "rented": true,
+      "hours": 4,
+      "charge": 100
+    }
+  ]
+}
