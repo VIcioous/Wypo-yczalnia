@@ -27,6 +27,20 @@
       "rented": true,
       "hours": 4,
       "charge": 100
+    },
+    {
+      "id": "4e338fc9-f865-4a62-ad38-179e66cb8007",
+      "model": "A4",
+      "mark": "Audi",
+      "power": 125,
+      "yearmade": 1998,
+      "price": 12,
+      "color": "Srebrny",
+      "bodytype": "Kombi",
+      "description": "Fajne autko",
+      "rented": false,
+      "hours": 0,
+      "charge": 0
     }
   ]
 }

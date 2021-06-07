@@ -10,9 +10,9 @@ import api from '../api/cars'
 import EditCar from "./EditCar";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-
+ 
 toast.configure();
-
+ 
 function addPopUp()
 {
   toast.success('Dodano nowy samochód',
@@ -45,14 +45,16 @@ function returnPopUp(marka,model, cena)
 }
 function App() {
   const [cars,setCars]= useState([])
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] =useState([]);
+ 
   const retrieveCars = async()=>
   {
     const response = await api.get ("/cars");
     return response.data;
   }
-
-
+ 
+ 
   const addCarHandler= async (car)=>
   {
     console.log(car);
@@ -69,11 +71,11 @@ function App() {
     {
       const response =await api.put(`/cars/${car.id}`,car)
       const {id,mark,model,power,yearmade,price,color,bodytype,description,rented,hours,charge} =response.data;
-
+ 
       setCars(
         cars.map((car)=>{
         return car.id=== id ? {...response.data} : car;
-
+ 
       }))
       editPopUp()
     }
@@ -81,11 +83,11 @@ function App() {
     {
       const response =await api.put(`/cars/${car.id}`,car)
       const {id,mark,model,power,yearmade,price,color,bodytype,description,rented,hours,charge} =response.data;
-
+ 
       setCars(
         cars.map((car)=>{
         return car.id=== id ? {...response.data} : car;
-
+ 
       }))
       rentPopUp(car.mark,car.model, car.hours)
     }
@@ -100,12 +102,12 @@ function App() {
       setCars(
         cars.map((car)=>{
         return car.id=== id ? {...response.data} : car;
-
+ 
       }))
       returnPopUp(car.mark,car.model,car.charge)
     }
   const removeCarHandler =async (id)=>
-
+ 
   {
      await api.delete(`/cars/${id}`);
     const newCarList = cars.filter((car)=>{
@@ -115,8 +117,27 @@ function App() {
     deletePopUp();
     
   }
+ 
+  const searchHandler = (searchTerm) =>{
+    console.log(searchTerm);
+    setSearchTerm(searchTerm);
+    //jak coś wpiszemy do wyszukania
+    if(searchTerm !==""){
+      const newCarList = cars.filter((car)=>{
+        return Object.values(car)
+        .join("")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      });
+      setSearchResults(newCarList);
+    }
+    else{
+      setSearchResults(cars);
+    }
+  };
+ 
   useEffect(()=>{
-
+ 
    const getAllCars = async ()=>
    {
      const allCars =await retrieveCars();
@@ -125,7 +146,7 @@ function App() {
    getAllCars();
   },[])
   useEffect(()=>{
-
+ 
   },[cars])
  return(
   
@@ -133,7 +154,7 @@ function App() {
    <div className="ui container"  >
      <Router>
      <Header/>
-
+ 
      <Switch>
      <Route path="/add" exact
       render ={(props) => (
@@ -144,10 +165,16 @@ function App() {
      <Route path="/" exact
      render ={(props)=>(
        <CarList {...props}
-       cars={cars} getCarId={removeCarHandler} getCarIdToReturn={returnCarHandler}/>
-     )} />
-
-
+       cars={searchTerm.length < 1 ? cars : searchResults} 
+       getCarId={removeCarHandler} 
+       getCarIdToReturn={returnCarHandler}
+       term={searchTerm}
+       searchKeyword={searchHandler}
+       />
+     )} 
+     />
+ 
+ 
      <Route path="/car/:id" render={(props)=>(<CarRent {...props} updateCarHandler={rentCarHandler}/>)}/>
      
      <Route path="/edit" exact
@@ -157,13 +184,13 @@ function App() {
       ) } 
       />
      </Switch>
-
+ 
      </Router>
      </div>
-
+ 
  );
-
+ 
   
 }
-
+ 
 export default App;
